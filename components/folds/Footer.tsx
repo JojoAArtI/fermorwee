@@ -19,7 +19,7 @@ export function Footer() {
       <div className="wrap">
         {/* Row 1: brand + link columns */}
         <div className="grid gap-12 lg:grid-cols-12">
-          <a href="#main" className="flex items-center gap-2.5 self-start rounded-full lg:col-span-4" aria-label="Fermor, back to top">
+          <a href="#main" className="flex min-h-11 items-center gap-2.5 self-start rounded-full lg:col-span-4" aria-label="Fermor, back to top">
             <Mark className="h-7 w-auto" />
             <span className="font-ui text-xl font-semibold">Fermor</span>
           </a>
@@ -27,10 +27,10 @@ export function Footer() {
             {footerColumns.map((col) => (
               <div key={col.heading}>
                 <h2 className="font-ui text-xs font-semibold uppercase tracking-[.3em] text-white/90">{col.heading}</h2>
-                <ul className="mt-5 space-y-1">
+                <ul className="mt-4">
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <a href={l.href} className="inline-flex min-h-9 items-center text-[15px] text-white/50 transition-colors hover:text-white">
+                      <a href={l.href} className="inline-flex min-h-11 min-w-11 items-center text-[15px] text-white/50 transition-colors hover:text-white">
                         {l.label}
                       </a>
                     </li>

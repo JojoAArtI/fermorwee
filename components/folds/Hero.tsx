@@ -12,7 +12,7 @@ export function Hero() {
   return (
     <section id="hero" aria-labelledby="hero-title" data-nav-light className="p-3">
       <LightsOff className="on-light relative overflow-hidden rounded-[20px] bg-paper text-ink will-change-transform md:rounded-[28px] lg:h-[min(calc(100svh-24px),980px)] lg:min-h-[680px]">
-        <div className="mx-auto grid h-full max-w-[1280px] gap-6 px-5 pb-6 pt-28 sm:px-8 md:pt-32 lg:grid-cols-12 lg:items-center lg:gap-0 lg:px-12 lg:pb-10 lg:pt-24">
+        <div className="mx-auto grid h-full max-w-[1280px] gap-6 2xl:max-w-[1440px] px-5 pb-6 pt-28 sm:px-8 md:pt-32 lg:grid-cols-12 lg:items-center lg:gap-0 lg:px-12 lg:pb-10 lg:pt-24">
           <div className="relative z-10 lg:col-span-6 lg:-mr-8">
             <p className="eyebrow">{hero.eyebrow}</p>
             <h1 id="hero-title" className="display mt-5 text-ink lg:mt-6 lg:text-[clamp(64px,6.6vw,108px)]">
@@ -47,8 +47,8 @@ export function Hero() {
               className="aspect-[4/5] w-full max-w-[440px] lg:aspect-[3/4] lg:h-full lg:w-auto lg:max-w-none"
               sizes="(min-width: 1024px) 40vw, (min-width: 640px) 440px, 100vw"
             />
-            <Parallax speed={0.15} className="absolute bottom-[12%] left-[-2%] hidden lg:block xl:left-[-4%]">
-              <div className="rise-in w-[230px] rounded-2xl bg-ink p-4 text-white">
+            <Parallax speed={0.15} className="absolute bottom-[3%] left-[8%] hidden lg:block xl:bottom-[12%] xl:left-[-4%]">
+              <div className="rise-in w-[210px] rounded-2xl bg-ink p-4 text-white xl:w-[230px]">
                 <div className="flex items-center justify-between">
                   <p className="font-ui text-[10.5px] font-semibold uppercase tracking-[.3em] text-white/70">{hero.card.eyebrow}</p>
                   <Tag variant="soon">{hero.card.tag}</Tag>

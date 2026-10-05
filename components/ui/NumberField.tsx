@@ -77,7 +77,7 @@ export function NumberField({ id, labelId, value, min, max, onChange, format, ra
               e.currentTarget.blur();
             }
           }}
-          className="num min-w-0 bg-transparent text-right text-[18px] text-white outline-none [field-sizing:content]"
+          className="num -my-2 h-11 min-w-11 bg-transparent text-right text-[18px] text-white outline-none [field-sizing:content]"
         />
         {suffix && <span className="num text-[15px] text-white/70" aria-hidden>{suffix}</span>}
       </div>

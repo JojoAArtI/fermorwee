@@ -69,7 +69,7 @@ export function Tabs<T extends string>({ idPrefix, label, tabs, selected, onSele
             aria-controls={panelId(idPrefix, tab.id)}
             tabIndex={active ? 0 : -1}
             onClick={() => onSelect(tab.id)}
-            className={`relative h-12 px-3 font-ui text-[15px] font-medium transition-colors duration-200 first:pl-0 sm:px-4 sm:first:pl-0 ${
+            className={`relative h-12 min-w-11 px-3 font-ui text-[15px] font-medium transition-colors duration-200 first:pl-0 sm:px-4 sm:first:pl-0 ${
               active ? "text-white" : "text-white/60 hover:text-white/90"
             }`}
           >

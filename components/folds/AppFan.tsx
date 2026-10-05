@@ -30,7 +30,17 @@ export function AppFan() {
       // Desktop: pin for one screen while the stacked phones fan out.
       mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
         const width = () => stage.current!.offsetWidth;
-        gsap.fromTo(
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section.current,
+            start: "top top",
+            end: "+=100%",
+            pin: true,
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
+        tl.fromTo(
           phones,
           {
             xPercent: -50,
@@ -44,16 +54,11 @@ export function AppFan() {
             y: (i) => FAN[i].y,
             rotation: (i) => FAN[i].r,
             ease: "none",
-            scrollTrigger: {
-              trigger: section.current,
-              start: "top top",
-              end: "+=100%",
-              pin: true,
-              scrub: true,
-              invalidateOnRefresh: true,
-            },
+            duration: 1,
           },
         );
+        // Captions would pile up while the phones are stacked; bring them in as the fan opens.
+        tl.fromTo("[data-phone] figcaption", { opacity: 0 }, { opacity: 1, ease: "none", duration: 0.3 }, 0.7);
       });
 
       // Mobile: no pin; the row tilts into place once on enter.
@@ -85,6 +90,7 @@ export function AppFan() {
           {appFan.title}
         </h2>
         <p className="body-lg mx-auto mt-5 max-w-[52ch]">{appFan.sub}</p>
+        <Tag className="mt-6 lg:absolute lg:right-8 lg:top-0 lg:mt-0">{appFan.tag}</Tag>
       </div>
 
       <div className="relative mt-12 md:mt-8 md:flex-1">
@@ -119,7 +125,6 @@ export function AppFan() {
         </div>
       </div>
 
-      <Tag className="absolute right-4 top-6 z-10 sm:right-6 md:right-8 md:top-24">{appFan.tag}</Tag>
     </section>
   );
 }

@@ -101,7 +101,7 @@ export function Closing() {
                   aria-invalid={invalid || undefined}
                   aria-describedby={invalid ? "waitlist-error" : "waitlist-note"}
                   onChange={() => status === "error" && setStatus("idle")}
-                  className={`h-14 min-w-0 flex-1 rounded-full border bg-white px-6 text-base text-ink outline-none transition-colors placeholder:text-ink/45 focus-visible:border-mint-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint-deep ${
+                  className={`h-14 w-full min-w-0 rounded-full sm:flex-1 border bg-white px-6 text-base text-ink outline-none transition-colors placeholder:text-ink/45 focus-visible:border-mint-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint-deep ${
                     invalid ? "border-[#B42318]" : "border-ink/15"
                   }`}
                 />

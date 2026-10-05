@@ -60,7 +60,7 @@ export function WhereYouStand() {
             {(["income", "investments", "expenses", "goals"] as const).map((k) => (
               <Card key={k} k={k} sizes="45vw" className="rounded-2xl" />
             ))}
-            <div className="col-span-2 mx-auto w-full max-w-[300px] pt-2">
+            <div className="col-span-2 mx-auto w-full max-w-[240px] pt-2">
               <Card k="assets" sizes="300px" className="rounded-2xl" />
             </div>
           </div>
