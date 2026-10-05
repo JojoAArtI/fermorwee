@@ -7,21 +7,41 @@ import { ButtonLink } from "./Button";
 import { Mark } from "./Mark";
 import { MobileMenu } from "./MobileMenu";
 
-/** Floating pill nav. Turns light while it sits over the white hero sheet (#hero). */
+/** Floating pill nav. Turns light while it sits over a light panel ([data-nav-light]). */
 export function Nav() {
   const [light, setLight] = useState(false);
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const hero = document.getElementById("hero");
-    if (!hero) return;
-    // A thin strip at the top of the viewport, where the nav sits.
-    const io = new IntersectionObserver(([entry]) => setLight(entry.isIntersecting), {
-      rootMargin: "-40px 0px -92% 0px",
-    });
-    io.observe(hero);
-    return () => io.disconnect();
+    // Light panels (hero sheet, closing panel) mark themselves with data-nav-light.
+    const panels = document.querySelectorAll("[data-nav-light]");
+    if (!panels.length) return;
+    const under = new Set<Element>();
+    let io: IntersectionObserver | undefined;
+
+    // Watch a 1px line across the nav's vertical centre (44px from the top).
+    const observe = () => {
+      io?.disconnect();
+      under.clear();
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) under.add(e.target);
+            else under.delete(e.target);
+          }
+          setLight(under.size > 0);
+        },
+        { rootMargin: `-44px 0px -${Math.max(0, window.innerHeight - 45)}px 0px` },
+      );
+      panels.forEach((p) => io!.observe(p));
+    };
+    observe();
+    window.addEventListener("resize", observe);
+    return () => {
+      window.removeEventListener("resize", observe);
+      io?.disconnect();
+    };
   }, []);
 
   const closeMenu = useCallback((returnFocus = true) => {

@@ -197,6 +197,32 @@ html.lenis, html.lenis body { height: auto; }
   .fan-phone { transform: translateX(-50%) translateX(var(--x)) translateY(var(--y)) rotate(var(--r)); }
 }
 
+/* Product rail: first card lines up with the content column; snapping respects the same inset. */
+.rail {
+  --inset: max(16px, calc((100vw - 1200px) / 2 + 16px));
+  padding-inline: var(--inset);
+  scroll-padding-inline: var(--inset);
+}
+@media (min-width: 640px) { .rail { --inset: max(24px, calc((100vw - 1200px) / 2 + 24px)); } }
+@media (min-width: 1024px) { .rail { --inset: max(32px, calc((100vw - 1200px) / 2 + 32px)); } }
+
+/* AMC strip: one slow loop; pauses on hover; never moves under reduced motion. */
+@keyframes marquee { to { transform: translateX(-50%); } }
+.marquee { animation: marquee 40s linear infinite; }
+.marquee:hover, .marquee:focus-within { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .marquee { animation: none; } }
+
+/* FAQ: animate the answer open and closed where the browser can. */
+.faq details::details-content {
+  block-size: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: block-size .45s var(--ease-out-expo), opacity .35s ease, content-visibility .45s allow-discrete;
+}
+.faq details[open]::details-content { block-size: auto; opacity: 1; }
+@supports (interpolate-size: allow-keywords) { :root { interpolate-size: allow-keywords; } }
+.faq details[open] .plus { transform: rotate(45deg); }
+
 /* "show the math" disclosure chevron. */
 details[open] > summary .chev { transform: rotate(180deg); }
 summary { list-style: none; }

@@ -10,7 +10,7 @@ const SPARK = "M0 30 L12 27 L22 28 L34 22 L46 24 L58 17 L70 18 L82 11 L94 12 L10
 
 export function Hero() {
   return (
-    <section id="hero" aria-labelledby="hero-title" className="p-3">
+    <section id="hero" aria-labelledby="hero-title" data-nav-light className="p-3">
       <LightsOff className="on-light relative overflow-hidden rounded-[20px] bg-paper text-ink will-change-transform md:rounded-[28px] lg:h-[min(calc(100svh-24px),980px)] lg:min-h-[680px]">
         <div className="mx-auto grid h-full max-w-[1280px] gap-6 px-5 pb-6 pt-28 sm:px-8 md:pt-32 lg:grid-cols-12 lg:items-center lg:gap-0 lg:px-12 lg:pb-10 lg:pt-24">
           <div className="relative z-10 lg:col-span-6 lg:-mr-8">
