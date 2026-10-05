@@ -1,0 +1,18 @@
+# CRED media downloaded for private study only. Not ours, never commit or ship.
+docs/reference/cred/
+
+# Next.js / Node
+node_modules/
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+
+# Env
+.env*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
