@@ -16,3 +16,8 @@ next-env.d.ts
 # OS
 .DS_Store
 Thumbs.db
+
+# Testing / misc
+/coverage
+*.pem
+npm-debug.log*
