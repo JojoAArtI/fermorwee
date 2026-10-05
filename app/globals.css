@@ -173,3 +173,31 @@ html.lenis, html.lenis body { height: auto; }
 /* Horizontal rails: scroll with touch, wheel or keys, but hide the bar. */
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Content column: 1200px max with a responsive gutter (16 / 24 / 32px). */
+@utility wrap {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 16px;
+  @media (min-width: 640px) { padding-inline: 24px; }
+  @media (min-width: 1024px) { padding-inline: 32px; }
+}
+
+/* Hero floating card enters after the video starts. */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+.rise-in { animation: rise-in .9s var(--ease-out-expo) .6s both; }
+
+/* App fan. Static (no JS / reduced motion) layout is the finished fan; GSAP animates into it. */
+.fan-phone { transform: rotate(var(--rm, 0deg)); }
+@media (min-width: 768px) {
+  .fan-phone { transform: translateX(-50%) translateX(var(--x)) translateY(var(--y)) rotate(var(--r)); }
+}
+
+/* "show the math" disclosure chevron. */
+details[open] > summary .chev { transform: rotate(180deg); }
+summary { list-style: none; }
+summary::-webkit-details-marker { display: none; }

@@ -9,7 +9,8 @@ import { Pause, Play } from "lucide-react";
  * The poster is a real <Image priority> underneath, so it is the LCP element and shows
  * with JS off or under reduced motion; the video fades in only once it is playing.
  */
-export function HeroVideo({ className = "" }: { className?: string }) {
+/** `className` sizes the box (aspect ratio / height); the video covers it, centred on the phone. */
+export function HeroVideo({ className = "aspect-video w-full", sizes = "(min-width: 1024px) 45vw, 100vw" }: { className?: string; sizes?: string }) {
   const video = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
   const [started, setStarted] = useState(false);
@@ -42,14 +43,14 @@ export function HeroVideo({ className = "" }: { className?: string }) {
   };
 
   return (
-    <div className={`relative aspect-video w-full ${className}`}>
+    <div className={`relative overflow-hidden ${className}`}>
       <Image
         src="/video/hero-poster.jpg"
         alt="The Fermor app home screen on an iPhone, showing a net worth of ₹12,48,230 and a rising chart"
         fill
         priority
-        sizes="(min-width: 1024px) 55vw, 100vw"
-        className="object-contain"
+        sizes={sizes}
+        className="object-cover"
       />
       <video
         ref={video}
@@ -64,7 +65,7 @@ export function HeroVideo({ className = "" }: { className?: string }) {
         }}
         onPause={() => setPlaying(false)}
         onEnded={() => setPlaying(false)}
-        className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-300 ${started ? "opacity-100" : "opacity-0"}`}
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${started ? "opacity-100" : "opacity-0"}`}
       >
         <source src="/video/hero-720.mp4" type="video/mp4" media="(max-width: 767px)" />
         <source src="/video/hero-1080.mp4" type="video/mp4" />

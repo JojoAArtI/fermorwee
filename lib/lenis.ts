@@ -5,6 +5,8 @@ let instance: Lenis | null = null;
 
 export const setLenis = (l: Lenis | null) => {
   instance = l;
+  // Handle for scripted checks in development (scroll to a position without easing).
+  if (process.env.NODE_ENV !== "production") (window as unknown as { __lenis?: Lenis | null }).__lenis = l;
 };
 export const getLenis = () => instance;
 

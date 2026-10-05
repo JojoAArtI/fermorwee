@@ -1,11 +1,11 @@
+import { AppFan } from "@/components/folds/AppFan";
+import { Hero } from "@/components/folds/Hero";
+import { LiveCalculator } from "@/components/folds/LiveCalculator";
+import { Manifesto } from "@/components/folds/Manifesto";
 import { Nav } from "@/components/ui/Nav";
 
-// Placeholder: each fold is replaced by its real component in later phases.
-const folds = [
-  { id: "hero", title: "money, with the math shown." },
-  { id: "manifesto", title: "not a members-only club." },
-  { id: "products", title: "every rupee, explained." },
-  { id: "calculator", title: "run it before you sign it." },
+// Phase 5 replaces these with real folds.
+const placeholders = [
   { id: "where-you-stand", title: "your whole money life, on one screen." },
   { id: "rail", title: "start where you are." },
   { id: "privacy", title: "your numbers aren't our business." },
@@ -20,23 +20,17 @@ export default function Home() {
     <>
       <Nav />
       <main id="main">
-        {folds.map((fold, i) => (
-          <section
-            key={fold.id}
-            id={fold.id}
-            aria-labelledby={`${fold.id}-title`}
-            className={`mx-auto flex min-h-[80svh] max-w-[1200px] flex-col justify-center px-4 py-20 sm:px-6 lg:px-8 lg:py-32 ${i ? "hairline" : ""}`}
-          >
-            <p className="eyebrow">Fold {String(i + 1).padStart(2, "0")}</p>
-            {i === 0 ? (
-              <h1 id={`${fold.id}-title`} className="display mt-6">
-                {fold.title}
-              </h1>
-            ) : (
-              <h2 id={`${fold.id}-title`} className="display-md mt-6">
+        <Hero />
+        <Manifesto />
+        <AppFan />
+        <LiveCalculator />
+        {placeholders.map((fold) => (
+          <section key={fold.id} id={fold.id} aria-labelledby={`${fold.id}-title`} className="hairline py-24 md:py-36">
+            <div className="wrap">
+              <h2 id={`${fold.id}-title`} className="display-md t-50">
                 {fold.title}
               </h2>
-            )}
+            </div>
           </section>
         ))}
       </main>
