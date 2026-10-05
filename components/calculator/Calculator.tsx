@@ -18,14 +18,22 @@ const TABS: { id: Tab; label: string }[] = [
 
 const PANELS: Record<Tab, () => React.ReactElement> = { sip: SipPanel, loan: EmiPanel, tax: TaxPanel };
 
-/** Three calculators in one panel. All panels stay mounted so each keeps its inputs. */
+/**
+ * Three calculators in one panel. A panel mounts the first time its tab is opened (less work on
+ * page load) and then stays mounted, so each keeps its inputs.
+ */
 export function Calculator() {
   const [tab, setTab] = useState<Tab>("sip");
+  const [opened, setOpened] = useState<Set<Tab>>(() => new Set(["sip"]));
+  const select = (id: Tab) => {
+    setTab(id);
+    setOpened((s) => (s.has(id) ? s : new Set(s).add(id)));
+  };
   const link = calculatorCopy.links[tab];
 
   return (
     <div className="rounded-[20px] border border-line bg-panel p-5 sm:p-8 md:rounded-[28px] lg:p-10">
-      <Tabs idPrefix="calc" label="Calculator" tabs={TABS} selected={tab} onSelect={setTab} />
+      <Tabs idPrefix="calc" label="Calculator" tabs={TABS} selected={tab} onSelect={select} />
 
       {TABS.map(({ id }) => {
         const Panel = PANELS[id];
@@ -38,7 +46,7 @@ export function Calculator() {
             hidden={tab !== id}
             className="pt-8 lg:pt-10"
           >
-            <Panel />
+            {opened.has(id) && <Panel />}
           </div>
         );
       })}

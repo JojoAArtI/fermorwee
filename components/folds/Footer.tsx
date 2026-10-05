@@ -78,9 +78,19 @@ export function Footer() {
       {/* Giant clipped wordmark */}
       <div aria-hidden className="relative mt-16 flex flex-col items-center">
         <span className="h-0.5 w-20 bg-mint" />
-        <p className="mt-6 translate-y-[20%] select-none font-display text-[22vw] font-bold leading-[.8] tracking-[-.04em] text-white/[.06] [font-variation-settings:'opsz'_144]">
-          fermor
-        </p>
+        {/* SVG text: a decorative graphic, not readable copy. */}
+        <svg viewBox="0 0 1000 300" className="mt-6 w-[90vw] max-w-[1400px] translate-y-[20%] select-none overflow-visible" aria-hidden focusable="false">
+          <text
+            x="500"
+            y="250"
+            textAnchor="middle"
+            fill="rgb(255 255 255 / .06)"
+            className="font-display font-bold [font-variation-settings:'opsz'_144]"
+            style={{ fontSize: 330, letterSpacing: "-.04em" }}
+          >
+            fermor
+          </text>
+        </svg>
       </div>
     </footer>
   );

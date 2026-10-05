@@ -81,7 +81,7 @@ export function SipPanel() {
                   key={y}
                   type="button"
                   aria-pressed={years === y}
-                  aria-label={yearsLabel(y)}
+                  aria-label={`${y}Y, ${yearsLabel(y)}`}
                   onClick={() => setYears(y)}
                   className="relative h-9 rounded-full border border-white/15 px-3.5 font-ui text-[13px] font-medium text-white/70 transition-colors after:absolute after:-inset-1 hover:border-white/40 hover:text-white aria-pressed:border-mint aria-pressed:bg-mint aria-pressed:text-ink"
                 >

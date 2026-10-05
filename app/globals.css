@@ -24,6 +24,20 @@
   --font-sans: var(--font-inter-rupee), var(--font-inter), system-ui, sans-serif;
 }
 
+/* Times New Roman scaled to Fraunces' widths (measured: bold 94.5%, light 86.7%). See app/fonts.ts. */
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT");
+  font-weight: 500 900;
+  size-adjust: 94.5%;
+}
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Times New Roman"), local("TimesNewRomanPSMT");
+  font-weight: 100 499;
+  size-adjust: 86.7%;
+}
+
 html { background: var(--color-void); color: #fff; }
 body {
   background: var(--color-void);

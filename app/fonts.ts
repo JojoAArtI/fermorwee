@@ -3,12 +3,15 @@ import localFont from "next/font/local";
 // Self-hosted (see scripts/build-fonts.py). Each family gets a tiny companion face
 // holding only "₹", which the Latin subsets don't include.
 
+// Fraunces falls back to a width-matched Times ("Fraunces Fallback" in globals.css), so headlines
+// wrap onto the same lines before and after the font arrives: no layout shift on swap.
 export const fraunces = localFont({
   src: "./fonts/fraunces-latin.woff2",
   weight: "100 900",
   variable: "--font-fraunces",
   display: "swap",
-  adjustFontFallback: "Times New Roman",
+  adjustFontFallback: false,
+  fallback: ["Fraunces Fallback"],
 });
 
 export const frauncesRupee = localFont({

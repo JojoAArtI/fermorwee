@@ -19,7 +19,12 @@ export function HeroVideo({ className = "aspect-video w-full", sizes = "(min-wid
   useEffect(() => {
     const v = video.current;
     if (!v) return;
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) v.play().catch(() => {});
+    // Start after the page has loaded, so decoding doesn't compete with first render.
+    const start = () => {
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) v.play().catch(() => {});
+    };
+    if (document.readyState === "complete") start();
+    else window.addEventListener("load", start, { once: true });
 
     // Pause while off screen; resume only if the user didn't pause it and it hasn't ended.
     const io = new IntersectionObserver(([entry]) => {
@@ -27,7 +32,10 @@ export function HeroVideo({ className = "aspect-video w-full", sizes = "(min-wid
       else if (!userPaused.current && !v.ended && v.currentTime > 0) v.play().catch(() => {});
     });
     io.observe(v);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      window.removeEventListener("load", start);
+    };
   }, []);
 
   const toggle = () => {
@@ -49,6 +57,7 @@ export function HeroVideo({ className = "aspect-video w-full", sizes = "(min-wid
         alt="The Fermor app home screen on an iPhone, showing a net worth of ₹12,48,230 and a rising chart"
         fill
         priority
+        fetchPriority="high"
         sizes={sizes}
         className="object-cover"
       />
