@@ -34,7 +34,7 @@ body {
 }
 ::selection { background: var(--color-mint); color: var(--color-ink); }
 :focus-visible { outline: 2px solid var(--color-mint); outline-offset: 3px; border-radius: 4px; }
-.on-light :focus-visible { outline-color: var(--color-mint-deep); }
+.on-light :focus-visible, [data-light] :focus-visible { outline-color: var(--color-mint-deep); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
@@ -126,3 +126,50 @@ html.lenis, html.lenis body { height: auto; }
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
+
+/* ---------- Components ---------- */
+
+/* Mobile menu links stagger in when the sheet opens. */
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+.menu-item { animation: menu-in .7s var(--ease-out-expo) both; }
+
+/* Range slider: 4px track filled with mint up to --fill, 22px white thumb, 44px hit area. */
+.range {
+  --fill: 0%;
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 44px;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.range:focus-visible { outline-offset: 0; border-radius: 12px; }
+.range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--color-mint) var(--fill), rgb(255 255 255 / .14) var(--fill));
+}
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -9px;
+  border-radius: 50%;
+  background: #fff;
+  border: 0;
+  transition: transform .2s var(--ease-out-expo);
+}
+.range:active::-webkit-slider-thumb { transform: scale(1.12); }
+.range::-moz-range-track { height: 4px; border-radius: 999px; background: rgb(255 255 255 / .14); }
+.range::-moz-range-progress { height: 4px; border-radius: 999px; background: var(--color-mint); }
+.range::-moz-range-thumb { width: 22px; height: 22px; border: 0; border-radius: 50%; background: #fff; }
+
+/* Horizontal rails: scroll with touch, wheel or keys, but hide the bar. */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }

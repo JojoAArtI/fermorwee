@@ -1,4 +1,6 @@
-// Phase 1 placeholder: each fold is replaced by its real component in later phases.
+import { Nav } from "@/components/ui/Nav";
+
+// Placeholder: each fold is replaced by its real component in later phases.
 const folds = [
   { id: "hero", title: "money, with the math shown." },
   { id: "manifesto", title: "not a members-only club." },
@@ -16,6 +18,7 @@ const folds = [
 export default function Home() {
   return (
     <>
+      <Nav />
       <main id="main">
         {folds.map((fold, i) => (
           <section
