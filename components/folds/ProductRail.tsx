@@ -17,9 +17,14 @@ function ProductCard({ p }: { p: Product }) {
           className="absolute inset-0 opacity-80 transition-opacity duration-500 group-hover/card:opacity-100"
           style={{ background: `radial-gradient(60% 60% at 50% 40%, ${p.glow} 0%, transparent 70%)` }}
         />
-        <div className="absolute inset-0 flex items-center justify-center p-6 transition-transform duration-700 ease-out-expo group-hover/card:scale-[1.03]">
+        <div
+          className={`absolute inset-0 flex justify-center p-6 transition-transform duration-700 ease-out-expo group-hover/card:scale-[1.03] ${
+            p.image.phone ? "items-start pt-10" : "items-center"
+          }`}
+        >
+          {/* Phones peek up from the bottom edge, top (and island) in view. */}
           {p.image.phone ? (
-            <PhoneFrame src={p.image.src} alt="" sizes="150px" className="mt-16 w-[150px] rounded-[30px] p-1.5 [&>div]:rounded-[24px]" />
+            <PhoneFrame src={p.image.src} alt="" sizes="160px" className="w-[160px]" />
           ) : (
             <Image src={p.image.src} alt="" width={p.image.w} height={p.image.h} sizes="260px" className="h-auto max-h-full w-[80%] rounded-2xl object-contain" />
           )}

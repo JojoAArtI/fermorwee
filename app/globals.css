@@ -243,3 +243,15 @@ html.lenis, html.lenis body { height: auto; }
 details[open] > summary .chev { transform: rotate(180deg); }
 summary { list-style: none; }
 summary::-webkit-details-marker { display: none; }
+
+/* ---------- Hero intro (see components/folds/Hero.tsx) ----------
+   <html class="intro"> is set by an inline script before first paint, only on the first visit of a
+   session with motion allowed. Without it, the hero renders in its finished state. If the script
+   that plays the intro never runs, the failsafe animations show everything after 6s. */
+.hero-loader, .hero-side-tile { display: none; }
+.intro .hero-loader, .intro .hero-side-tile { display: block; }
+.intro, .intro body { overflow: hidden; }
+.intro [data-intro-hide], .intro [data-intro-fade], .intro header { opacity: 0; animation: intro-failsafe-show 0s 6s forwards; }
+.intro .hero-loader { animation: intro-failsafe-hide 0s 6s forwards; }
+@keyframes intro-failsafe-show { to { opacity: 1; } }
+@keyframes intro-failsafe-hide { to { visibility: hidden; } }

@@ -1,14 +1,25 @@
 // Copy for the top half of the page: hero, manifesto, app fan, live calculator.
 
 export const hero = {
-  eyebrow: "Personal finance, for India",
-  // The headline is split so "math" can carry the mint marker.
-  title: { before: "money, with the ", mark: "math", after: " shown." },
-  lead: "Fermor turns SIPs, loans, tax and salary into clear numbers. 158 free calculators today, an app that explains every rupee tomorrow. Built for India. No login, no sales pitch.",
-  primary: { label: "explore calculators", href: "https://fermor.in/calculators" },
-  secondary: { label: "join the app waitlist", href: "#waitlist" },
-  trust: ["158 calculators", "runs in your browser", "₹0 to use"],
-  card: { eyebrow: "Net worth", value: "₹12,48,230", tag: "preview" },
+  // One statement, in the voice of the reference layout.
+  title:
+    "We turn SIPs, loans, tax and salary into clear numbers, where every answer shows its working, because clarity was never meant to be a members-only club.",
+  links: {
+    label: "Start free",
+    items: [
+      { label: "Explore 158 calculators", href: "https://fermor.in/calculators" },
+      { label: "Join the app waitlist", href: "#waitlist" },
+    ],
+  },
+  // Intro tiles either side of the video (decorative; the cards reappear later on the page).
+  tiles: ["/img/cards/card-income.webp", "/img/cards/card-investments.webp", "/img/cards/card-expenses.webp", "/img/cards/card-goals.webp"],
+  video: {
+    sources: [
+      { src: "/video/hero-bg-av1.mp4", type: 'video/mp4; codecs="av01.0.08M.10"' },
+      { src: "/video/hero-bg.mp4", type: "video/mp4" },
+    ],
+    poster: "/video/hero-bg-poster.jpg",
+  },
 };
 
 export const manifesto = {
