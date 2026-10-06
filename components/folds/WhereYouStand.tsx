@@ -55,13 +55,25 @@ export function WhereYouStand() {
             ))}
           </div>
 
-          {/* Mobile: 2-column grid, then the tall assets card. */}
-          <div className="grid grid-cols-2 gap-3 pt-8 md:hidden">
-            {(["income", "investments", "expenses", "goals"] as const).map((k) => (
-              <Card key={k} k={k} sizes="45vw" className="rounded-2xl" />
-            ))}
-            <div className="col-span-2 mx-auto w-full max-w-[240px] pt-2">
-              <Card k="assets" sizes="300px" className="rounded-2xl" />
+          {/* Mobile: a scattered, overlapping collage (varied widths, tilts and offsets). */}
+          <div className="relative overflow-visible px-1 pt-6 md:hidden">
+            <div aria-hidden className="glow-mint absolute inset-x-8 top-1/4 h-1/2 opacity-20" />
+            <div className="relative flex flex-col items-center [&>div]:shadow-[0_14px_40px_-10px_rgba(0,0,0,.65)]">
+              <div className="relative z-20 w-[72%] -translate-x-2 self-start rotate-[-4deg]">
+                <Card k="income" sizes="72vw" className="rounded-2xl" />
+              </div>
+              <div className="relative z-30 -mt-5 w-[60%] translate-x-1 self-end rotate-[5deg]">
+                <Card k="investments" sizes="60vw" className="rounded-2xl" />
+              </div>
+              <div className="relative z-10 -mt-6 w-[50%] -translate-x-1 self-start rotate-[-3deg]">
+                <Card k="assets" sizes="50vw" className="rounded-2xl" />
+              </div>
+              <div className="relative z-40 -mt-28 w-[66%] translate-x-2 self-end rotate-[3deg]">
+                <Card k="expenses" sizes="66vw" className="rounded-2xl" />
+              </div>
+              <div className="relative z-50 -mt-10 w-[62%] self-start rotate-[-3deg]">
+                <Card k="goals" sizes="62vw" className="rounded-2xl" />
+              </div>
             </div>
           </div>
         </div>
