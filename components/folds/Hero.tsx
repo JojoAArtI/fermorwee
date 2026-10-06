@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { Pause, Play } from "lucide-react";
 import { SplitText } from "gsap/SplitText";
 import { CustomEase } from "gsap/CustomEase";
 import { hero } from "@/content/home";
@@ -29,7 +28,6 @@ const VIDEO_INDEX = 2; // the middle tile becomes the hero
 export function Hero() {
   const root = useRef<HTMLElement>(null);
   const video = useRef<HTMLVideoElement>(null);
-  const [playing, setPlaying] = useState(false);
   const userPaused = useRef(false);
 
   useGSAP(
@@ -118,14 +116,6 @@ export function Hero() {
     return () => io.disconnect();
   }, []);
 
-  const toggle = () => {
-    const v = video.current;
-    if (!v) return;
-    userPaused.current = !v.paused;
-    if (v.paused) v.play().catch(() => {});
-    else v.pause();
-  };
-
   const sideTiles = [hero.tiles[0], hero.tiles[1], null, hero.tiles[2], hero.tiles[3]];
 
   return (
@@ -149,8 +139,6 @@ export function Hero() {
               poster={hero.video.poster}
               aria-hidden
               tabIndex={-1}
-              onPlay={() => setPlaying(true)}
-              onPause={() => setPlaying(false)}
               className="absolute inset-0 h-full w-full object-cover"
             >
               {hero.video.sources.map((s) => (
@@ -187,16 +175,6 @@ export function Hero() {
           ))}
         </div>
       </div>
-
-      <button
-        type="button"
-        data-intro-fade
-        onClick={toggle}
-        aria-label={playing ? "Pause background video" : "Play background video"}
-        className="absolute bottom-4 right-4 z-20 grid size-11 place-items-center rounded-full border border-white/20 bg-black/30 text-white backdrop-blur-sm transition-colors hover:border-white/60 md:bottom-6 md:right-6"
-      >
-        {playing ? <Pause aria-hidden className="size-3.5" fill="currentColor" /> : <Play aria-hidden className="ml-0.5 size-3.5" fill="currentColor" />}
-      </button>
     </section>
   );
 }
