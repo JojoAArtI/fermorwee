@@ -99,15 +99,11 @@ export function Nav() {
             showWords ? "translate-y-0 opacity-100 blur-0" : "pointer-events-none -translate-y-5 opacity-0 blur-[3px]"
           }`}
         >
-          <a href="#main" className="-my-3 flex items-start gap-2.5 py-3.5 font-sans text-[15px] leading-[1.35] text-white" aria-label="Fermor, back to top">
-            <Mark color="#ffffff" className="mt-0.5 h-[18px] w-auto shrink-0" />
+          <a href="#main" className="-my-3 flex items-center gap-2.5 py-3.5 font-sans text-[15px] leading-[1.35] text-white" aria-label="Fermor, back to top">
+            <Mark color="#ffffff" className="h-6 w-auto shrink-0" />
             <span className="block">
-              <span data-split className="block font-medium">
-                Fermor
-              </span>
-              <span data-split className="block text-white/70">
-                Money, with the math shown.
-              </span>
+              <span data-split className="block font-medium">Fermor</span>
+              <span data-split className="block text-white/70">Money, with the math shown.</span>
             </span>
           </a>
 
