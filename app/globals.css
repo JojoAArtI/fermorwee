@@ -73,13 +73,26 @@ html.lenis, html.lenis body { height: auto; }
   text-wrap: balance;
 }
 
-@utility display-md {
+/* Big, bold section heading (used where a heavier statement reads better, e.g. Proof). */
+@utility display-bold {
   font-family: var(--font-display);
   font-weight: 700;
   font-variation-settings: "opsz" 144, "SOFT" 0;
-  font-size: clamp(36px, 5.5vw, 84px);
-  line-height: .95;
+  font-size: clamp(40px, 6vw, 88px);
+  line-height: .92;
   letter-spacing: -.03em;
+  text-transform: lowercase;
+  text-wrap: balance;
+}
+
+/* Section headings: light Fraunces, the same clean register as the manifesto. */
+@utility display-md {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-variation-settings: "opsz" 144, "SOFT" 0;
+  font-size: clamp(34px, 5vw, 72px);
+  line-height: 1.04;
+  letter-spacing: -.015em;
   text-transform: lowercase;
   text-wrap: balance;
 }
@@ -126,7 +139,7 @@ html.lenis, html.lenis body { height: auto; }
 @utility hairline { border-top: 1px solid var(--color-line); }
 
 @utility glow-mint {
-  background: radial-gradient(closest-side, rgb(117 251 144 / .35), transparent);
+  background: radial-gradient(closest-side, rgb(117 251 144 / .20), transparent);
   filter: blur(40px);
 }
 

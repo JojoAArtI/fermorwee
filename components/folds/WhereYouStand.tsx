@@ -45,7 +45,7 @@ export function WhereYouStand() {
 
           {/* Desktop: loose collage, each card drifting at its own speed. */}
           <div className="relative hidden aspect-[6/6.4] md:block">
-            <div aria-hidden className="glow-mint absolute inset-[15%] opacity-40" />
+            <div aria-hidden className="glow-mint absolute inset-[18%] opacity-20" />
             {COLLAGE.map(({ key, className, rotate, speed }) => (
               <Parallax key={key} speed={speed} className={`absolute ${className}`}>
                 <div style={{ transform: `rotate(${rotate}deg)` }}>

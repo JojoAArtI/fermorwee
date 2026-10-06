@@ -16,16 +16,20 @@ export function Closing() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
 
-  // Desktop + motion: two halves of the silk part like a curtain to reveal the panel.
+  // Desktop + motion: the silk cover softly blurs, lightens and fades away to reveal the panel,
+  // so it reads as an opening rather than two hard sliding panels.
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
       mm.add(DESKTOP_MOTION, () => {
-        gsap.set("[data-curtain]", { display: "block" });
-        const tl = gsap.timeline({
-          scrollTrigger: { trigger: "[data-panel]", start: "top 70%", end: "top 10%", scrub: true },
+        gsap.set("[data-cover]", { display: "block", opacity: 1, filter: "blur(0px)", scale: 1 });
+        gsap.to("[data-cover]", {
+          opacity: 0,
+          filter: "blur(36px)",
+          scale: 1.08,
+          ease: "power1.inOut",
+          scrollTrigger: { trigger: "[data-panel]", start: "top 78%", end: "top 22%", scrub: true },
         });
-        tl.to("[data-curtain=left]", { xPercent: -100, ease: "none" }, 0).to("[data-curtain=right]", { xPercent: 100, ease: "none" }, 0);
       });
     },
     { scope: section },
@@ -140,23 +144,12 @@ export function Closing() {
           </ul>
         </div>
 
-        {/* Curtain halves: hidden until GSAP shows them (desktop + motion only). */}
-        {(["left", "right"] as const).map((side) => (
-          <div
-            key={side}
-            data-curtain={side}
-            aria-hidden
-            className={`absolute inset-y-0 z-10 hidden w-1/2 overflow-hidden ${side === "left" ? "left-0" : "right-0"}`}
-          >
-            <Image
-              src="/img/curtain.webp"
-              alt=""
-              fill
-              sizes="100vw"
-              className={`!w-[200%] max-w-none object-cover ${side === "left" ? "!left-0" : "!left-auto !right-0"}`}
-            />
-          </div>
-        ))}
+        {/* Soft silk cover: blurs and fades away on scroll (desktop + motion only). */}
+        <div data-cover aria-hidden className="absolute inset-0 z-10 hidden origin-center will-change-[opacity,transform,filter]">
+          <Image src="/img/curtain.webp" alt="" fill sizes="100vw" className="scale-110 object-cover" />
+          {/* A soft shadow so the panel reads as opening from dark to light. */}
+          <div className="absolute inset-0 bg-[radial-gradient(120%_100%_at_50%_50%,rgb(15_15_15/.15)_0%,rgb(15_15_15/.55)_100%)]" />
+        </div>
       </div>
     </section>
   );

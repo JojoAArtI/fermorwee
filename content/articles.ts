@@ -35,9 +35,30 @@ export const featured: Article = {
 };
 
 export const articles: Article[] = [
-  { title: "UPI Charges Above Rs 2,000: New MDR Rule Explained", category: "Regulation", date: "2026-09-22", minutes: 13, slug: "upi-charges-above-2000" },
-  { title: "Bank Strike September 28-30, 2026: 5 Days Banks Closed, What Works", category: "Regulation", date: "2026-09-25", minutes: 12, slug: "bank-strike-september-2026" },
-  { title: "Income Tax Rebate Under Section 87A: Limits and Marginal Relief", category: "Income Tax", date: "2026-07-30", minutes: 11, slug: "section-87a-rebate" },
+  {
+    title: "UPI Charges Above Rs 2,000: New MDR Rule Explained",
+    category: "Regulation",
+    date: "2026-09-22",
+    minutes: 13,
+    slug: "upi-charges-above-2000",
+    summary: "A new merchant discount rate applies to some high-value person-to-merchant UPI payments. Who actually pays it, who stays exempt, and what it changes for everyday transfers.",
+  },
+  {
+    title: "Bank Strike September 28-30, 2026: 5 Days Banks Closed, What Works",
+    category: "Regulation",
+    date: "2026-09-25",
+    minutes: 12,
+    slug: "bank-strike-september-2026",
+    summary: "A bank union strike lands next to a weekend and a holiday, closing branches for a stretch. Which services keep running, what to finish beforehand, and when counters reopen.",
+  },
+  {
+    title: "Income Tax Rebate Under Section 87A: Limits and Marginal Relief",
+    category: "Income Tax",
+    date: "2026-07-30",
+    minutes: 11,
+    slug: "section-87a-rebate",
+    summary: "The 87A rebate can take your tax to zero up to a threshold, with marginal relief softening the jump just above it. How both work, with the arithmetic laid out step by step.",
+  },
 ];
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

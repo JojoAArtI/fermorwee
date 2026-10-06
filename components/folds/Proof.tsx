@@ -24,7 +24,7 @@ export function Proof() {
       <div className="wrap grid gap-14 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-5">
           <p className="eyebrow">{proofCopy.eyebrow}</p>
-          <h2 id="proof-title" className="display-md mt-5">
+          <h2 id="proof-title" className="display-bold mt-5">
             {proofCopy.title}
           </h2>
         </div>

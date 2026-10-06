@@ -43,7 +43,7 @@ export const appFan = {
 
 export const calculatorCopy = {
   eyebrow: "Try it · no login",
-  title: "run it before you sign it.",
+  title: "run the numbers.",
   sub: "Real numbers, real formulas, the same math as Fermor's 158 calculators.",
   disclaimer: "Results are indicative and for education only. Not financial advice.",
   links: {

@@ -94,7 +94,7 @@ export function AppFan() {
       </div>
 
       <div className="relative mt-12 md:mt-8 md:flex-1">
-        <div aria-hidden className="glow-mint pointer-events-none absolute left-1/2 top-1/2 h-[70%] w-[min(90vw,900px)] -translate-x-1/2 -translate-y-1/2 opacity-60" />
+        <div aria-hidden className="glow-mint pointer-events-none absolute left-1/2 top-1/2 h-[60%] w-[min(80vw,760px)] -translate-x-1/2 -translate-y-1/2 opacity-25" />
 
         <div
           ref={stage}

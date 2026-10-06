@@ -4,7 +4,7 @@ import { Closing } from "@/components/folds/Closing";
 import { Faq } from "@/components/folds/Faq";
 import { Footer } from "@/components/folds/Footer";
 import { Hero } from "@/components/folds/Hero";
-import { LiveCalculator } from "@/components/folds/LiveCalculator";
+import { TheWorking } from "@/components/folds/TheWorking";
 import { Manifesto } from "@/components/folds/Manifesto";
 import { Privacy } from "@/components/folds/Privacy";
 import { ProductRail } from "@/components/folds/ProductRail";
@@ -20,7 +20,7 @@ export default function Home() {
         <Hero />
         <Manifesto />
         <AppFan />
-        <LiveCalculator />
+        <TheWorking />
         <WhereYouStand />
         <ProductRail />
         <Privacy />

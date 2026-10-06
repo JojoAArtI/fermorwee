@@ -1,44 +1,29 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { PhoneFrame } from "@/components/media/PhoneFrame";
 import { GhostButton } from "@/components/ui/GhostButton";
 import { Tag } from "@/components/ui/Tag";
 import { products, railCopy, type Product } from "@/content/products";
+import { ANY_MOTION, gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 
 function ProductCard({ p }: { p: Product }) {
   return (
-    <li className="group/card relative flex h-[500px] w-[min(78vw,340px)] shrink-0 snap-start flex-col overflow-hidden rounded-3xl border border-line bg-panel transition-transform duration-500 ease-out-expo hover:-translate-y-1.5">
-      <div className="relative h-[55%] overflow-hidden">
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-80 transition-opacity duration-500 group-hover/card:opacity-100"
-          style={{ background: `radial-gradient(60% 60% at 50% 40%, ${p.glow} 0%, transparent 70%)` }}
-        />
-        <div
-          className={`absolute inset-0 flex justify-center p-6 transition-transform duration-700 ease-out-expo group-hover/card:scale-[1.03] ${
-            p.image.phone ? "items-start pt-10" : "items-center"
-          }`}
-        >
-          {/* Phones peek up from the bottom edge, top (and island) in view. */}
-          {p.image.phone ? (
-            <PhoneFrame src={p.image.src} alt="" sizes="160px" className="w-[160px]" />
-          ) : (
-            <Image src={p.image.src} alt="" width={p.image.w} height={p.image.h} sizes="260px" className="h-auto max-h-full w-[80%] rounded-2xl object-contain" />
-          )}
-        </div>
-        <Tag variant={p.status} className="absolute left-5 top-5">
-          {p.status === "live" ? "Live" : "Soon"}
-        </Tag>
-      </div>
-      <div className="flex flex-1 flex-col p-6 pt-5">
-        <h3 className="font-display text-[32px] font-semibold leading-none tracking-[-.02em] lowercase [font-variation-settings:'opsz'_144]">{p.title}</h3>
-        <p className="mt-3 text-[15px] leading-relaxed text-white/70">{p.description}</p>
+    <li data-card className="group/card relative h-[clamp(440px,64vh,560px)] w-[min(80vw,360px)] shrink-0 snap-start overflow-hidden rounded-3xl border border-line bg-panel">
+      <Image src={p.image.src} alt={p.image.alt} fill sizes="360px" className="object-cover transition-transform duration-700 ease-out-expo group-hover/card:scale-[1.04]" />
+      {/* Readability gradient over the photo. */}
+      <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgb(5_6_6/.95)_12%,rgb(5_6_6/.55)_42%,rgb(5_6_6/.12)_100%)]" />
+
+      <Tag variant={p.status} className="absolute left-5 top-5">
+        {p.status === "live" ? "Live" : "Soon"}
+      </Tag>
+
+      <div className="absolute inset-x-0 bottom-0 flex flex-col p-6">
+        <h3 className="font-display text-[clamp(28px,2.4vw,34px)] font-light leading-none tracking-[-.01em] lowercase text-white [font-variation-settings:'opsz'_144]">{p.title}</h3>
+        <p className="mt-3 max-w-[32ch] text-[15px] leading-relaxed text-white/70">{p.description}</p>
         <GhostButton
           href={p.href}
-          className="mt-auto self-start"
+          className="mt-6 self-start"
           aria-label={p.status === "live" ? `Know more about ${p.title}` : `Know more about ${p.title}: join the app waitlist`}
         >
           Know more
@@ -49,97 +34,79 @@ function ProductCard({ p }: { p: Product }) {
 }
 
 export function ProductRail() {
-  const rail = useRef<HTMLUListElement>(null);
-  const [edges, setEdges] = useState({ start: true, end: false });
-  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+  const section = useRef<HTMLElement>(null);
+  const track = useRef<HTMLUListElement>(null);
+  const trigger = useRef<ScrollTrigger | null>(null);
 
-  const update = useCallback(() => {
-    const el = rail.current;
-    if (!el) return;
-    setEdges({ start: el.scrollLeft <= 2, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 2 });
-  }, []);
+  // Motion allowed (desktop and phone): pin the section and turn vertical scroll into horizontal
+  // travel, so the rail plays through fully before the page moves on. Reduced motion keeps native swipe.
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add(ANY_MOTION, () => {
+        const el = track.current!;
+        const wrapper = el.parentElement as HTMLElement;
+        // Let the pinned track travel outside the wrapper (the section clips it); native scroll was
+        // the no-JS / reduced-motion fallback, so only override it once GSAP is actually running.
+        wrapper.style.overflowX = "visible";
+        const distance = () => Math.max(0, el.scrollWidth - wrapper.clientWidth);
+        const tween = gsap.to(el, {
+          x: () => -distance(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: section.current,
+            start: "top top",
+            end: () => "+=" + distance(),
+            pin: true,
+            scrub: 0.4,
+            invalidateOnRefresh: true,
+          },
+        });
+        trigger.current = tween.scrollTrigger ?? null;
+        return () => {
+          trigger.current = null;
+          wrapper.style.overflowX = "";
+        };
+      });
+    },
+    { scope: section },
+  );
 
-  useEffect(() => {
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, [update]);
-
-  const step = (dir: 1 | -1) => {
-    const el = rail.current;
-    const card = el?.querySelector("li");
-    if (!el || !card) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    el.scrollBy({ left: dir * (card.offsetWidth + 16), behavior: reduce ? "auto" : "smooth" });
-  };
-
-  // Mouse drag-to-scroll (touch and trackpads already scroll natively).
-  const onPointerDown = (e: React.PointerEvent<HTMLUListElement>) => {
-    if (e.pointerType !== "mouse" || e.button !== 0 || !rail.current) return;
-    drag.current = { x: e.clientX, left: rail.current.scrollLeft, moved: false };
-  };
-  const onPointerMove = (e: React.PointerEvent<HTMLUListElement>) => {
-    const d = drag.current;
-    const el = rail.current;
-    if (!d || !el) return;
-    const dx = e.clientX - d.x;
-    if (!d.moved && Math.abs(dx) > 5) {
-      d.moved = true;
-      el.setPointerCapture(e.pointerId);
-      el.dataset.dragging = "";
-    }
-    if (d.moved) el.scrollLeft = d.left - dx;
-  };
-  const endDrag = (e: React.PointerEvent<HTMLUListElement>) => {
-    const el = rail.current;
-    if (!drag.current || !el) return;
-    if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
-    delete el.dataset.dragging;
-    // Keep `moved` until the click that follows the drag has been swallowed.
-    setTimeout(() => (drag.current = null), 0);
+  // Keyboard: a card focused off to the side can't be scrolled into view (it's translated, not
+  // scrolled), so nudge the page scroll to the point that reveals it.
+  const onFocusCapture = (e: React.FocusEvent<HTMLUListElement>) => {
+    const st = trigger.current;
+    const el = track.current;
+    if (!st || !el) return;
+    const card = (e.target as HTMLElement).closest<HTMLElement>("[data-card]");
+    if (!card) return;
+    const distance = Math.max(0, el.scrollWidth - (el.parentElement?.clientWidth ?? 0));
+    if (!distance) return;
+    const x = Math.min(distance, Math.max(0, card.offsetLeft - 32));
+    window.scrollTo({ top: st.start + (x / distance) * (st.end - st.start) });
   };
 
   return (
-    <section aria-labelledby="rail-title" className="hairline py-24 md:py-36">
-      <div className="wrap flex items-end justify-between gap-6">
-        <div>
-          <p className="eyebrow">{railCopy.eyebrow}</p>
-          <h2 id="rail-title" className="display-md mt-5">
-            {railCopy.title}
-          </h2>
-        </div>
-        <div className="hidden gap-2 md:flex">
-          <button type="button" onClick={() => step(-1)} disabled={edges.start} aria-label="Previous products" className="grid size-11 place-items-center rounded-full border border-white/30 transition-colors hover:border-white disabled:opacity-30 disabled:hover:border-white/30">
-            <ArrowLeft aria-hidden className="size-4" />
-          </button>
-          <button type="button" onClick={() => step(1)} disabled={edges.end} aria-label="Next products" className="grid size-11 place-items-center rounded-full border border-white/30 transition-colors hover:border-white disabled:opacity-30 disabled:hover:border-white/30">
-            <ArrowRight aria-hidden className="size-4" />
-          </button>
-        </div>
+    <section ref={section} aria-labelledby="rail-title" className="hairline overflow-hidden py-20 md:py-28">
+      <div className="wrap">
+        <p className="eyebrow">{railCopy.eyebrow}</p>
+        <h2 id="rail-title" className="display-md mt-5">
+          {railCopy.title}
+        </h2>
       </div>
 
-      <ul
-        ref={rail}
-        tabIndex={0}
-        aria-label="Fermor products"
-        onScroll={update}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        onClickCapture={(e) => {
-          if (drag.current?.moved) {
-            e.preventDefault();
-            e.stopPropagation();
-          }
-        }}
-        onDragStart={(e) => e.preventDefault()}
-        className="rail no-scrollbar mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain pb-4 pt-2 md:mt-16 md:cursor-grab md:data-[dragging]:cursor-grabbing md:data-[dragging]:snap-none"
-      >
-        {products.map((p) => (
-          <ProductCard key={p.title} p={p} />
-        ))}
-      </ul>
+      <div className="no-scrollbar mt-12 overflow-x-auto md:mt-16">
+        <ul
+          ref={track}
+          onFocusCapture={onFocusCapture}
+          aria-label="Fermor products"
+          className="flex w-max snap-x snap-mandatory gap-4 px-[max(16px,calc((100vw-1200px)/2+16px))] will-change-transform sm:px-[max(24px,calc((100vw-1200px)/2+24px))] lg:px-[max(32px,calc((100vw-1200px)/2+32px))]"
+        >
+          {products.map((p) => (
+            <ProductCard key={p.title} p={p} />
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }

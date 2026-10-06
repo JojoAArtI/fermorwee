@@ -40,7 +40,7 @@ A working calculator sits mid-page because it proves "show the math" instead of 
 - GSAP + ScrollTrigger drive the reveals, phone fan and curtain; Lenis adds smooth scroll. Both switch off under reduced motion, and Lenis is off on touch devices.
 - `lib/finance.ts` matches fermor.in's formulas (SIP uses an effective monthly rate). 30 tests cover every fixture, including the 87A rebate and marginal relief.
 - `/api/waitlist` is a mock that validates and stores nothing.
-- The hero opens with a short intro (once per session): a loading bar, five tilted tiles sliding into a row, and the middle one growing into a full-bleed video loop while the headline rises line by line. It is skipped under reduced motion, and without JavaScript the page renders in its finished state. The loop is a 16s 1080p AV1 file (2.7 MB) with an H.264 fallback. Fonts are self-hosted, with a width-matched fallback so headlines don't shift when they load.
+- The hero opens with a short intro (once per session): a loading bar, five tilted tiles sliding into a row, and the middle one growing into a full-bleed video loop while the nav words and the statement rise line by line. At the top the nav is just words; the pill bar slides in once you scroll. It is skipped under reduced motion, and without JavaScript the page renders in its finished state. The loop is a 16s 1080p AV1 file (2.7 MB) with an H.264 fallback. Fonts are self-hosted, with a width-matched fallback so headlines don't shift when they load.
 
 ## Accessibility and performance
 
@@ -50,8 +50,8 @@ Lighthouse, production build (mobile is the median of three runs):
 
 | | Performance | Accessibility | Best practices | SEO |
 |---|---|---|---|---|
-| Mobile | 61 | 97 | 100 | 100 |
-| Desktop | 94 | 97 | 100 | 100 |
+| Mobile | 56–66 | 97 | 100 | 100 |
+| Desktop | 83–92 | 97 | 100 | 100 |
 
 CLS is 0. The hero intro is the main cost on mobile: Lighthouse loads a fresh session, so it always sees the full intro, and the headline (the LCP element) only appears once the intro finishes (simulated LCP 4.7–5.1s). Before the intro, mobile performance was 86. Accessibility is 97 only because the reveal words start dim before you scroll to them, which is the intended effect.
 

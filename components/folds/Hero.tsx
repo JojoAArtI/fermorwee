@@ -181,7 +181,7 @@ export function Hero() {
             {hero.links.label}
           </p>
           {hero.links.items.map((l) => (
-            <a key={l.label} href={l.href} data-split className="-my-3 block w-fit py-3 transition-opacity hover:opacity-60">
+            <a key={l.label} href={l.href} data-split className="flex min-h-11 w-fit items-center transition-opacity hover:opacity-60">
               {l.label}
             </a>
           ))}

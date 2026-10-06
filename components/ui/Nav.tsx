@@ -9,14 +9,16 @@ import { MobileMenu } from "./MobileMenu";
 
 const SCROLLED_AT = 120; // px scrolled before the words give way to the pill bar
 
+type NavMode = "top" | "up" | "down";
+
 /**
  * Two navs in one landmark:
  *  - at the top of the page, plain words over the hero (brand on two lines, links on the right);
- *  - once you scroll, a floating pill bar slides in. It turns light over light panels ([data-nav-light]).
- * Only the active layer is reachable: the other is `inert`.
+ *  - once you scroll, a floating pill bar that shows while scrolling up and hides while scrolling down.
+ * Only the active layer is reachable: the others are `inert`.
  */
 export function Nav() {
-  const [scrolled, setScrolled] = useState(false);
+  const [mode, setMode] = useState<NavMode>("top");
   const [light, setLight] = useState(false);
   const [open, setOpen] = useState(false);
   const topMenuButton = useRef<HTMLButtonElement>(null);
@@ -24,9 +26,14 @@ export function Nav() {
 
   useEffect(() => {
     let frame = 0;
+    let last = window.scrollY;
     const update = () => {
       frame = 0;
-      setScrolled(window.scrollY > SCROLLED_AT);
+      const y = window.scrollY;
+      if (y <= SCROLLED_AT) setMode("top");
+      else if (y > last + 4) setMode("down");
+      else if (y < last - 4) setMode("up");
+      last = y;
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update);
@@ -73,10 +80,13 @@ export function Nav() {
   const closeMenu = useCallback(
     (returnFocus = true) => {
       setOpen(false);
-      if (returnFocus) (scrolled ? barMenuButton : topMenuButton).current?.focus();
+      if (returnFocus) (mode === "up" ? barMenuButton : topMenuButton).current?.focus();
     },
-    [scrolled],
+    [mode],
   );
+
+  const showWords = mode === "top";
+  const showPill = mode === "up";
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
@@ -84,12 +94,12 @@ export function Nav() {
         {/* Top of page: just words. */}
         <div
           data-nav-words
-          inert={scrolled}
-          className={`flex items-start justify-between px-4 pt-5 transition-[opacity,transform] duration-500 ease-out-expo sm:px-8 sm:pt-8 ${
-            scrolled ? "pointer-events-none -translate-y-3 opacity-0" : "opacity-100"
+          inert={!showWords}
+          className={`flex items-start justify-between px-4 pt-5 transition-[opacity,transform,filter] duration-[650ms] ease-out-expo sm:px-8 sm:pt-8 ${
+            showWords ? "translate-y-0 opacity-100 blur-0" : "pointer-events-none -translate-y-5 opacity-0 blur-[3px]"
           }`}
         >
-          <a href="#main" className="-my-3 block py-3 font-sans text-[15px] leading-[1.35] text-white">
+          <a href="#main" className="-my-3 block py-3.5 font-sans text-[15px] leading-[1.35] text-white">
             <span data-split className="block font-medium">
               Fermor
             </span>
@@ -101,7 +111,7 @@ export function Nav() {
           <ul className="hidden items-start gap-10 md:flex lg:gap-16">
             {[...navLinks, loginLink].map((link) => (
               <li key={link.label}>
-                <a href={link.href} title={link.title} data-split className="-my-3 block min-w-11 py-3 font-sans text-[15px] capitalize leading-[1.35] text-white transition-opacity hover:opacity-60">
+                <a href={link.href} title={link.title} data-split className="-my-3 block min-w-11 py-3.5 font-sans text-[15px] capitalize leading-[1.35] text-white transition-opacity hover:opacity-60">
                   {link.label === "for CAs" ? "For CAs" : link.label}
                 </a>
               </li>
@@ -122,10 +132,10 @@ export function Nav() {
 
         {/* After scrolling: the floating pill bar. */}
         <div
-          inert={!scrolled}
+          inert={!showPill}
           data-light={light || undefined}
-          className={`group/nav absolute inset-x-3 top-3 mx-auto flex h-14 max-w-[1120px] items-center justify-between rounded-full border border-line bg-black/40 pl-4 pr-1.5 text-white backdrop-blur-md transition-[background-color,border-color,color,opacity,transform] duration-500 ease-out-expo data-[light]:border-ink/10 data-[light]:bg-white/70 data-[light]:text-ink md:top-4 md:pl-5 md:pr-2 ${
-            scrolled ? "opacity-100" : "pointer-events-none -translate-y-[140%] opacity-0"
+          className={`group/nav absolute inset-x-3 top-3 mx-auto flex h-14 max-w-[1120px] origin-top items-center justify-between rounded-full border border-line bg-black/40 pl-4 pr-1.5 text-white backdrop-blur-md transition-[background-color,border-color,color,opacity,transform] duration-[550ms] ease-out-expo data-[light]:border-ink/10 data-[light]:bg-white/70 data-[light]:text-ink md:top-4 md:pl-5 md:pr-2 ${
+            showPill ? "translate-y-0 scale-100 opacity-100" : "pointer-events-none -translate-y-[130%] scale-95 opacity-0"
           }`}
         >
           <a href="#main" className="-ml-1 flex items-center gap-2.5 rounded-full px-1 py-2" aria-label="Fermor, back to top">
