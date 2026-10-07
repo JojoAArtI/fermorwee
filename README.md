@@ -1,6 +1,6 @@
 # Fermor homepage (concept)
 
-**Live:** _add the Vercel URL after deploying_ · **Repo:** https://github.com/JojoAArtI/fermorwee
+**Live:** [Fermor](https://fermorwee.vercel.app) · **Repo:** https://github.com/JojoAArtI/fermorwee
 
 A new homepage for [Fermor](https://fermor.in), built as a two-day internship assignment. It's a concept, not the official site.
 
